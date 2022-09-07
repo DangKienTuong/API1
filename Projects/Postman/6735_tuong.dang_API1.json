@@ -1,0 +1,1104 @@
+{
+	"info": {
+		"_postman_id": "a787e10a-be68-4c1b-a22f-33e81cc0a79f",
+		"name": "6735_tuong.dang_API1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16863225"
+	},
+	"item": [
+		{
+			"name": "Exercise 1",
+			"item": [
+				{
+					"name": "Adds a new comment to an issue",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"body\": \"Issue comment posted successfully by tuong.dang\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/rest/api/2/issue/{{issueID}}/comment",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rest",
+								"api",
+								"2",
+								"issue",
+								"{{issueID}}",
+								"comment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Updates an existing comment",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"body\": \"Comment has been updated by tuong.dang\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/rest/api/2/issue/{{issueKey}}/comment/{{commentID}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rest",
+								"api",
+								"2",
+								"issue",
+								"{{issueKey}}",
+								"comment",
+								"{{commentID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Adds a new worklog entry",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"started\": \"2022-08-07T02:53:07.073-0600\",\r\n    \"timeSpentSeconds\": 3600,\r\n    \"comment\": \"I did some work here.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/rest/api/2/issue/{{issueID}}/worklog?newEstimate=8h&adjustEstimate=new",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rest",
+								"api",
+								"2",
+								"issue",
+								"{{issueID}}",
+								"worklog"
+							],
+							"query": [
+								{
+									"key": "newEstimate",
+									"value": "8h"
+								},
+								{
+									"key": "adjustEstimate",
+									"value": "new"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add one or more attachments",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Atlassian-Token",
+								"value": "nocheck",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/D:/text.txt"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/rest/api/2/issue/{{issueKey}}/attachments",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rest",
+								"api",
+								"2",
+								"issue",
+								"{{issueKey}}",
+								"attachments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Performs a search using JQL",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"jql\": \"project = TDP\",\r\n    \"startAt\": 0,\r\n    \"maxResults\": 15,\r\n    \"fields\": [\r\n        \"summary\",\r\n        \"status\",\r\n        \"assignee\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/rest/api/2/search",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rest",
+								"api",
+								"2",
+								"search"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Exercise 3",
+			"item": [
+				{
+					"name": "Adds a new comment to an issue",
+					"item": [
+						{
+							"name": "Comment_POST_POS_1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", () => {\r",
+											"  pm.response.to.have.status(201);\r",
+											"});\r",
+											"pm.test(\"Response time is less than 2000ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+											"});\r",
+											"pm.test(\"Body return comment has been posted\", () => {\r",
+											"  const responseJson = pm.response.json();\r",
+											"  pm.expect(responseJson.body).to.eql(\"'+1321^&@~'\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"body\": \"'+1321^&@~'\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/rest/api/2/issue/{{issueID}}/comment",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"rest",
+										"api",
+										"2",
+										"issue",
+										"{{issueID}}",
+										"comment"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Comment_POST_NEG_1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", () => {\r",
+											"  pm.response.to.have.status(400);\r",
+											"});\r",
+											"pm.test(\"Response time is less than 2000ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+											"});\r",
+											"pm.test(\"Body return error message\", () => {\r",
+											"  const responseJson = pm.response.json();\r",
+											"  pm.expect(responseJson.errors.comment).to.eql(\"Comment body can not be empty!\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"body\": \"\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/rest/api/2/issue/{{issueID}}/comment",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"rest",
+										"api",
+										"2",
+										"issue",
+										"{{issueID}}",
+										"comment"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Comment_POST_NEG_2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\", () => {\r",
+											"  pm.response.to.have.status(404);\r",
+											"});\r",
+											"pm.test(\"Response time is less than 2000ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+											"});\r",
+											"pm.test(\"Body return error message\", () => {\r",
+											"  const responseJson = pm.response.json();\r",
+											"  pm.expect(responseJson.errorMessages).to.eql([\"Issue Does Not Exist\"]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"body\": \"This is a bug\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/rest/api/2/issue/XX/comment",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"rest",
+										"api",
+										"2",
+										"issue",
+										"XX",
+										"comment"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Updates an existing comment",
+					"item": [
+						{
+							"name": "Comment_PUT_POS_1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", () => {\r",
+											"  pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"Response time is less than 2000ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+											"});\r",
+											"pm.test(\"Body return comment has been updated\", () => {\r",
+											"  const responseJson = pm.response.json();\r",
+											"  pm.expect(responseJson.body).to.eql(\"Comment has been updated by tuong.dang\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"body\": \"Comment has been updated by tuong.dang\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/rest/api/2/issue/{{issueKey}}/comment/{{commentID}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"rest",
+										"api",
+										"2",
+										"issue",
+										"{{issueKey}}",
+										"comment",
+										"{{commentID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Comment_PUT_NEG_1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", () => {\r",
+											"  pm.response.to.have.status(400);\r",
+											"});\r",
+											"pm.test(\"Response time is less than 2000ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+											"});\r",
+											"pm.test(\"Body return error message\", () => {\r",
+											"  const responseJson = pm.response.json();\r",
+											"  pm.expect(responseJson.errors.comment).to.eql(\"Comment body can not be empty!\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/rest/api/2/issue/{{issueKey}}/comment/{{commentID}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"rest",
+										"api",
+										"2",
+										"issue",
+										"{{issueKey}}",
+										"comment",
+										"{{commentID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Comment_PUT_NEG_2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\", () => {\r",
+											"  pm.response.to.have.status(404);\r",
+											"});\r",
+											"pm.test(\"Response time is less than 2000ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+											"});\r",
+											"pm.test(\"Body return error message\", () => {\r",
+											"  const responseJson = pm.response.json();\r",
+											"  pm.expect(responseJson.errorMessages).to.eql([\"Can not find a comment for the id: XX2.\"]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"body\": \"This is a bug\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/rest/api/2/issue/{{issueKey}}/comment/XX2",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"rest",
+										"api",
+										"2",
+										"issue",
+										"{{issueKey}}",
+										"comment",
+										"XX2"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Adds a new worklog entry",
+					"item": [
+						{
+							"name": "Worklog_POST_POS_1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", () => {\r",
+											"  pm.response.to.have.status(201);\r",
+											"});\r",
+											"pm.test(\"Response time is less than 2000ms\", function () {\r",
+											"  pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+											"});\r",
+											"pm.test(\"Body return worklog has been posted\", () => {\r",
+											"  const responseJson = pm.response.json();\r",
+											"  pm.expect(responseJson.started).to.eql(\"2022-08-07T15:53:07.073+0700\");\r",
+											"  pm.expect(responseJson.timeSpentSeconds).to.eql(3600);\r",
+											"  pm.expect(responseJson.comment).to.eql(\"I did some work here.\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"started\": \"2022-08-07T02:53:07.073-0600\",\r\n    \"timeSpentSeconds\": 3600,\r\n    \"comment\": \"I did some work here.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/rest/api/2/issue/{{issueID}}/worklog?newEstimate=8h&adjustEstimate=new",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"rest",
+										"api",
+										"2",
+										"issue",
+										"{{issueID}}",
+										"worklog"
+									],
+									"query": [
+										{
+											"key": "newEstimate",
+											"value": "8h"
+										},
+										{
+											"key": "adjustEstimate",
+											"value": "new"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Worklog_POST_NEG_1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", () => {\r",
+											"  pm.response.to.have.status(400);\r",
+											"});\r",
+											"pm.test(\"Response time is less than 2000ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+											"});\r",
+											"//Body return any error to make user known they are input wrong data type param in request body"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"started\": 1234,\r\n    \"timeSpentSeconds\": \"3600\",\r\n    \"comment\": 123\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/rest/api/2/issue/{{issueID}}/worklog?newEstimate=8h&adjustEstimate=new",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"rest",
+										"api",
+										"2",
+										"issue",
+										"{{issueID}}",
+										"worklog"
+									],
+									"query": [
+										{
+											"key": "newEstimate",
+											"value": "8h"
+										},
+										{
+											"key": "adjustEstimate",
+											"value": "new"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Worklog_POST_NEG_2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\", () => {\r",
+											"  pm.response.to.have.status(404);\r",
+											"});\r",
+											"pm.test(\"Response time is less than 2000ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+											"});\r",
+											"//Body return any error to make user known they are input wrong format new Estimate param value"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"started\": \"2022-08-07T02:53:07.073-0600\",\r\n    \"timeSpentSeconds\": 3600,\r\n    \"comment\": \"I did some work here.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/rest/api/2/issue/{{issueID}}/worklog?newEstimate=XX&adjustEstimate=new",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"rest",
+										"api",
+										"2",
+										"issue",
+										"{{issueID}}",
+										"worklog"
+									],
+									"query": [
+										{
+											"key": "newEstimate",
+											"value": "XX"
+										},
+										{
+											"key": "adjustEstimate",
+											"value": "new"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Add one or more attachments",
+					"item": [
+						{
+							"name": "Attachments_POST_POS_1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", () => {\r",
+											"  pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"Response time is less than 2000ms\", function () {\r",
+											"  pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+											"});\r",
+											"pm.test(\"Body return attachment has been posted\", () => {\r",
+											"  const responseJson = pm.response.json();\r",
+											"  pm.expect(responseJson[0].filename).to.eql(\"text.txt\");\r",
+											"  pm.expect(responseJson[0].mimeType).to.eql(\"text/plain\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Atlassian-Token",
+										"value": "nocheck",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/D:/text.txt"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/rest/api/2/issue/{{issueKey}}/attachments",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"rest",
+										"api",
+										"2",
+										"issue",
+										"{{issueKey}}",
+										"attachments"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Attachments_POST_POS_2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", () => {\r",
+											"  pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"Response time is less than 2000ms\", function () {\r",
+											"  pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+											"});\r",
+											"pm.test(\"Body return attachment has been posted\", () => {\r",
+											"  const responseJson = pm.response.json();\r",
+											"  pm.expect(responseJson[0].filename).to.eql(\"image.jpg\");\r",
+											"  pm.expect(responseJson[0].mimeType).to.eql(\"image/jpeg\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Atlassian-Token",
+										"value": "nocheck",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/D:/image.jpg"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/rest/api/2/issue/{{issueKey}}/attachments",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"rest",
+										"api",
+										"2",
+										"issue",
+										"{{issueKey}}",
+										"attachments"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Attachments_POST_NEG_1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\", () => {\r",
+											"  pm.response.to.have.status(404);\r",
+											"});\r",
+											"pm.test(\"Response time is less than 2000ms\", function () {\r",
+											"  pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+											"});\r",
+											"pm.test(\"Body return error message\", () => {\r",
+											"  const responseJson = pm.response.text();\r",
+											"  pm.expect(responseJson).to.eql(\"XSRF check failed\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Atlassian-Token",
+										"value": "nocheck",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/D:/text.txt"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/rest/api/2/issue/{{issueKey}}/attachments",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"rest",
+										"api",
+										"2",
+										"issue",
+										"{{issueKey}}",
+										"attachments"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Performs a search using JQL",
+					"item": [
+						{
+							"name": "Performs a search using JQL Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", () => {\r",
+											"  pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"Response time is less than 2000ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+											"});\r",
+											"pm.test(\"Body return max result is 15 and contains fields summary, status, assignee\", () => {\r",
+											"  const responseJson = pm.response.json();\r",
+											"  pm.expect(responseJson.issues.length).to.equal(15);\r",
+											"  pm.expect(responseJson.issues[14].fields).to.have.property('summary');\r",
+											"  pm.expect(responseJson.issues[14].fields).to.have.property('status');\r",
+											"  pm.expect(responseJson.issues[14].fields).to.have.property('assignee');\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"jql\": \"project = TDP\",\r\n    \"startAt\": 0,\r\n    \"maxResults\": 15,\r\n    \"fields\": [\r\n        \"summary\",\r\n        \"status\",\r\n        \"assignee\"\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/rest/api/2/search",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"rest",
+										"api",
+										"2",
+										"search"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Search_POST_NEG_1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", () => {\r",
+											"  pm.response.to.have.status(400);\r",
+											"});\r",
+											"pm.test(\"Response time is less than 2000ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+											"});\r",
+											"pm.test(\"Body return error message\", () => {\r",
+											"  const responseJson = pm.response.json();\r",
+											"  pm.expect(responseJson.errorMessages).to.eql([\"The value 'Training' does not exist for the field 'project'.\"]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"jql\": \"project = Training\",\r\n    \"startAt\": 0,\r\n    \"maxResults\": 15,\r\n    \"fields\": [\r\n        \"summary\",\r\n        \"status\",\r\n        \"assignee\"\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/rest/api/2/search",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"rest",
+										"api",
+										"2",
+										"search"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Search_POST_NEG_2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", () => {\r",
+											"  pm.response.to.have.status(400);\r",
+											"});\r",
+											"pm.test(\"Response time is less than 2000ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+											"});\r",
+											"pm.test(\"Body return error message\", () => {\r",
+											"  const responseJson = pm.response.json();\r",
+											"  pm.expect(responseJson.errorMessages[0]).to.include(\"Unrecognized field\", \"sql\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"sql\": \"project = TDP\",\r\n    \"startAt\": 0,\r\n    \"maxResults\": 15,\r\n    \"fields\": [\r\n        \"summary\",\r\n        \"status\",\r\n        \"assignee\"\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/rest/api/2/search",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"rest",
+										"api",
+										"2",
+										"search"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://jira.logigear.com"
+		},
+		{
+			"key": "username",
+			"value": "tuong.dang"
+		},
+		{
+			"key": "password",
+			"value": ""
+		},
+		{
+			"key": "issueID",
+			"value": "103975"
+		},
+		{
+			"key": "issueKey",
+			"value": "TDP-114"
+		},
+		{
+			"key": "commentID",
+			"value": "232511"
+		}
+	]
+}
